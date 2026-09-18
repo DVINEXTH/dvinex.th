@@ -1,10 +1,10 @@
 # DVINEX® SUPER APPS
 
-[![ISO/IEC 27001 CERTIFIED](https://img.shields.io/badge/SECURITY-ISO%2FIEC%2027001%3A2022-0052CC?style=for-the-badge&logo=shield)](https://dvinex.com)
-[![AUDIT STATUS](https://img.shields.io/badge/AUDIT%20STATUS-RESTRICTED%20PUBLIC%20INSPECTION-green?style=for-the-badge)](https://dvinex.com)
-[![MONOREPO ARCHITECTURE](https://img.shields.io/badge/ARCHITECTURE-UNIVERSAL%20POLYGLOT%20MONOREPO-orange?style=for-the-badge)](https://dvinex.com)
-[![ZERO COST INFRASTRUCTURE](https://img.shields.io/badge/INFRASTRUCTURE-100%25%20SUBSCRIPTION%20FREE-red?style=for-the-badge)](https://dvinex.com)
-[![INTELLECTUAL PROPERTY](https://img.shields.io/badge/PROPRIETARY-SOURCE%20AVAILABLE%20RESTRICTED-darkred?style=for-the-badge)](https://dvinex.com)
+[![ISO/IEC 27001 CERTIFIED](https://img.shields.io/badge/SECURITY-ISO%2FIEC%2027001%3A2022-0052CC?style=for-the-badge&logo=shield)](https://dvinex.net)
+[![AUDIT STATUS](https://img.shields.io/badge/AUDIT%20STATUS-RESTRICTED%20PUBLIC%20INSPECTION-green?style=for-the-badge)](https://dvinex.net)
+[![MONOREPO ARCHITECTURE](https://img.shields.io/badge/ARCHITECTURE-UNIVERSAL%20POLYGLOT%20MONOREPO-orange?style=for-the-badge)](https://dvinex.net)
+[![ZERO COST INFRASTRUCTURE](https://img.shields.io/badge/INFRASTRUCTURE-100%25%20SUBSCRIPTION%20FREE-red?style=for-the-badge)](https://dvinex.net)
+[![INTELLECTUAL PROPERTY](https://img.shields.io/badge/PROPRIETARY-SOURCE%20AVAILABLE%20RESTRICTED-darkred?style=for-the-badge)](https://dvinex.net)
 
 ---
 
