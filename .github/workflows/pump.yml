@@ -1,0 +1,82 @@
+name: ICECAST 24/7 LISTENER BOT (950 STABLE THAI BOTS)
+on:
+  schedule:
+    - cron: '0 */5 * * *'
+  workflow_dispatch:
+
+jobs:
+  run-bot:
+    runs-on: ubuntu-latest
+    steps:
+      - name: RUN AUTOMATED STABLE LOOP FOR 950 BOTS
+        run: |
+          # ===================================================
+          # >>> CHANGE THE URL BELOW TO YOUR ICECAST STREAM URL <<<
+          STREAM_URL="https://eagle.streemlion.com/proxy/dvinexc2?mp=/stream"
+          # ===================================================
+          
+          # ARRAY OF REAL THAILAND IP ADDRESS PREFIXES
+          TH_IP_PREFIXES=(
+            "1.46" "1.47" "27.55" "49.228" "49.230" "58.11" "101.108" "101.109" "110.164" "115.87" "124.120" "124.121" "124.122" "134.236" "171.96" "180.180" "182.52" "184.22" "223.204" "223.205"
+          )
+          NUM_PREFIXES=${#TH_IP_PREFIXES[@]}
+
+          # FUNCTION TO SPAWN 950 BOTS
+          SPAWN_BOTS() {
+            echo "[!] LAUNCHING 950 UNIQUE BOTS..."
+            for i in {1..950}
+            do
+              RAND_INDEX=$(( RANDOM % NUM_PREFIXES ))
+              PREFIX=${TH_IP_PREFIXES[$RAND_INDEX]}
+              OCTET3=$(( RANDOM % 254 + 1 ))
+              OCTET4=$(( RANDOM % 254 + 1 ))
+              FAKE_TH_IP="$PREFIX.$OCTET3.$OCTET4"
+
+              MODULO=$((i % 10))
+              if [ $MODULO -eq 0 ]; then
+                UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.$i.0 Safari/537.36"
+              elif [ $MODULO -eq 1 ]; then
+                UA="Mozilla/5.0 (iPhone; CPU iPhone OS 17_$((i%5))_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/605.1"
+              elif [ $MODULO -eq 2 ]; then
+                UA="Mozilla/5.0 (Linux; Android 14; SM-S928B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.$i.0 Mobile Safari/537.36"
+              elif [ $MODULO -eq 3 ]; then
+                UA="Mozilla/5.0 (Macintosh; Intel Mac OS X 14_2_1) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2 Safari/605.1.15"
+              elif [ $MODULO -eq 4 ]; then
+                UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0"
+              elif [ $MODULO -eq 5 ]; then
+                UA="Mozilla/5.0 (Linux; Android 13; CPH2437) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.$i.0 Mobile Safari/537.36"
+              elif [ $MODULO -eq 6 ]; then
+                UA="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.$i.0 Safari/537.36"
+              elif [ $MODULO -eq 7 ]; then
+                UA="Mozilla/5.0 (iPad; CPU OS 17_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2 Mobile/15E148 Safari/605.1"
+              elif [ $MODULO -eq 8 ]; then
+                UA="Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.$i.0 Safari/537.36"
+              else
+                UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.$i.0"
+              fi
+              
+              # LAUNCH EACH CURL IN BACKGROUND WITH A 60-HOUR TIMEOUT TO KEEP IT ALIVE
+              curl -L -m 216000 -s -H "X-Forwarded-For: $FAKE_TH_IP" -H "Client-IP: $FAKE_TH_IP" -A "$UA" "$STREAM_URL" > /dev/null 2>&1 &
+              sleep 0.002
+            done
+            echo "[+] 950 BOTS ARE SUCCESSFULLY CONNECTED."
+          }
+
+          # --- SESSION WORKFLOW ---
+          # 1. LAUNCH FIRST BATCH FOR 2.5 HOURS
+          SPAWN_BOTS
+          echo "[+] WAITING FOR THE FIRST 2.5 HOURS..."
+          sleep 9000
+
+          # 2. REFRESH SESSION WITHIN THE SAME MACHINE TO MAINTAIN FLAT STABILITY
+          echo "[!] REFRESHING BOTS TO PREVENT CONNECTION DROPS..."
+          pkill -f curl
+          sleep 1
+          SPAWN_BOTS
+          echo "[+] WAITING FOR THE SECOND 2.5 HOURS..."
+          sleep 9000
+
+          # 3. FINAL MINUTE OF THE MACHINE SESSION BEFORE NEXT MACHINE TAKES OVER
+          echo "[!] KILLING LOCAL SESSION. NEXT MACHINE WILL TAKE OVER IMMEDIATELY."
+          pkill -f curl
+          echo "[+] MACHINE JOB FINISHED."
