@@ -1,4 +1,4 @@
-name: ICECAST 24/7 LISTENER BOT (950 INSTANT REAL THAI IP BOTS)
+name: ICECAST 24/7 LISTENER BOT (950 INSTANT REAL THAI IP BOTS VIA XARGS)
 on:
   schedule:
     - cron: '0 */5 * * *'
@@ -28,11 +28,12 @@ jobs:
           PROXY_COUNT=$(wc -l < thai_proxies.txt)
           echo "[+] FOUND $PROXY_COUNT AVAILABLE THAI PROXIES."
           
-          echo "[!] FLOODING 950 BOTS SIMULTANEOUSLY USING THAI PROXIES..."
-
+          # PRE-GENERATE AND PREPARE ALL 950 COMMANDS IN A TEMP FILE FOR BULK LAUNCH
+          echo "[!] PREPARING 950 BOT CONFIGURATIONS IN MEMORY..."
+          rm -f bot_commands.txt
+          
           for i in {1..950}
           do
-            # RANDOMIZE AND DISTRIBUTE USER-AGENTS EVENLY
             MODULO=$((i % 4))
             if [ $MODULO -eq 0 ]; then
               UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.$i.0 Safari/537.36"
@@ -44,39 +45,33 @@ jobs:
               UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0"
             fi
 
-            # ROTATE THROUGH THE LIVE THAI PROXY LIST FILE
             PROXY_LINE=$(( (i % PROXY_COUNT) + 1 ))
             CURRENT_TH_PROXY=$(sed -n "${PROXY_LINE}p" thai_proxies.txt | tr -d '\r')
 
-            # FORCE THE CONNECTION TO ROUTE THROUGH THAI IP NETWORK AND HOLD FOR 2.5 HOURS
-            curl -x "http://$CURRENT_TH_PROXY" -L -m 216000 -s -A "$UA" "$STREAM_URL" > /dev/null 2>&1 &
+            # WRITE EVERY SINGLE CURL COMMAND LINE INTO THE BUFFER FILE
+            echo "curl -x http://$CURRENT_TH_PROXY -L -m 216000 -s -A \"$UA\" $STREAM_URL" >> bot_commands.txt
           done
 
-          echo "[+] ALL 950 BOTS ARE SUCCESSFULLY CONNECTED VIA THAI PROXIES! WAITING FOR THE FIRST 2.5 HOURS..."
+          # ------------------ FIRST BATCH LAUNCH ------------------
+          echo "[!] TRIGGERING 950 BOTS SIMULTANEOUSLY USING HIGH-SPEED PARALLEL MULTI-THREADING..."
+          # XARGS WITH -P 950 WILL FORCE UBUNTU TO SPAWN ALL 950 CONNECTIONS AT THE EXACT SAME SECOND
+          cat bot_commands.txt | xargs -I {} -P 950 sh -c "{}" > /dev/null 2>&1 &
+          
+          echo "[+] ALL 950 THAI BOTS ARE ACTIVE AND HOVERING! WAITING FOR THE FIRST 2.5 HOURS..."
           sleep 9000
 
-          echo "[!] REFRESHING BOTS TO MAINTAIN FLAT STABILITY..."
+          # ------------------ REFRESH SESSION ------------------
+          echo "[!] REFRESHING ALL CONNECTIONS INSTANTLY TO MAINTAIN FLAT STABILITY..."
           pkill -f curl
           sleep 1
 
-          # RELAUNCH SECOND BATCH VIA THAI PROXIES FOR FLAT 950 CONSTANT COUNT
-          for i in {1..950}
-          do
-            MODULO=$((i % 4))
-            if [ $MODULO -eq 0 ]; then UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0.$i.0";
-            elif [ $MODULO -eq 1 ]; then UA="Mozilla/5.0 (iPhone; CPU OS 17) Safari/605.1";
-            elif [ $MODULO -eq 2 ]; then UA="Mozilla/5.0 (Linux; Android 14) Chrome/122.0.$i.0";
-            else UA="Mozilla/5.0 (Windows NT 10.0; rv:121.0) Gecko/20100101 Firefox/121.0"; fi
-            
-            PROXY_LINE=$(( (i % PROXY_COUNT) + 1 ))
-            CURRENT_TH_PROXY=$(sed -n "${PROXY_LINE}p" thai_proxies.txt | tr -d '\r')
-            
-            curl -x "http://$CURRENT_TH_PROXY" -L -m 216000 -s -A "$UA" "$STREAM_URL" > /dev/null 2>&1 &
-          done
-
+          echo "[!] TRIGGERING THE NEXT BATCH OF 950 BOTS SIMULTANEOUSLY..."
+          cat bot_commands.txt | xargs -I {} -P 950 sh -c "{}" > /dev/null 2>&1 &
+          
           echo "[+] WAITING FOR THE SECOND 2.5 HOURS..."
           sleep 9000
 
+          # ------------------ FINALIZE SESSION ------------------
           echo "[!] KILLING LOCAL SESSION. NEXT MACHINE WILL TAKE OVER IMMEDIATELY."
           pkill -f curl
           echo "[+] MACHINE JOB FINISHED."
