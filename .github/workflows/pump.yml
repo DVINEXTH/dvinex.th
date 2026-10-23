@@ -11,13 +11,13 @@ jobs:
       - name: INSTALL ENVIRONMENT DEPENDENCIES
         run: |
           echo "[!] UPDATING SYSTEM AND VERIFYING DEPENDENCIES..."
-          sudo apt-get update && sudo apt-get install -y curl findutils coreutils
+          sudo apt-get update && sudo apt-get install -y curl findutils coreutils parallel
 
       - name: RUN AUTOMATED INSTANT MASSIVE THAI TRAFFIC GENERATOR
         run: |
           # ===================================================
           # >>> CHANGE THE URL BELOW TO YOUR ICECAST STREAM URL <<<
-          STREAM_URL="http://YOUR_ICECAST_SERVER_IP:PORT/stream"
+          STREAM_URL="https://eagle.streemlion.com/proxy/dvinexc2?mp=/stream"
           # ===================================================
           
           # POOL OF DIVERSE REAL THAILAND NETWORK NET BLOCKS (AIS, TRUE, 3BB, NT)
@@ -52,30 +52,22 @@ jobs:
               UA="Mozilla/5.0 (Macintosh; Intel Mac OS X 14_2_1) Version/17.2 Safari/605.1.15"
             fi
 
-            # TRIPLE-INJECT LOCAL THAI IP LOCATION REGISTER VIA HTTP HEADERS WITHOUT DELAY
-            echo "curl -L -m 20000 -s --tcp-nodelay -H 'X-Forwarded-For: $FAKE_TH_IP' -H 'Client-IP: $FAKE_TH_IP' -H 'X-Real-IP: $FAKE_TH_IP' -A '$UA' $STREAM_URL" >> bot_commands.txt
+            # TRIPLE-INJECT LOCAL THAI IP LOCATION REGISTER VIA HTTP HEADERS
+            # SET INDIVIDUAL CURL TIMEOUT TO 2.5 HOURS (9000 SECONDS) IN FOREGROUND RUN
+            echo "curl -L -m 9000 -s --tcp-nodelay -H 'X-Forwarded-For: $FAKE_TH_IP' -H 'Client-IP: $FAKE_TH_IP' -H 'X-Real-IP: $FAKE_TH_IP' -A '$UA' '$STREAM_URL'" >> bot_commands.txt
           done
 
-          # ------------------ FIRST BATCH LAUNCH ------------------
-          echo "[!] LAUNCHING 950 THAI BOTS INSTANTLY VIA ULTRARAPID MULTI-THREADING..."
-          # TRIPLE FORCE PARALLEL EXECUTION AT THE EXACT SAME MILLISECOND
-          cat bot_commands.txt | xargs -I {} -P 950 sh -c "{}" > /dev/null 2>&1 &
+          # ------------------ FIRST BATCH LAUNCH (FOREGROUND BLOCKING) ------------------
+          echo "[!] LAUNCHING FIRST BATCH OF 950 BOTS INSTANTLY VIA PARALLEL FOREGROUND PROCESSSING..."
+          # PARALLEL WILL FORCIBLY KEEP ALL 950 CONNECTIONS ALIVE WITHOUT BEING KILLED BY GITHUB WORKFLOW
+          parallel -j 950 < bot_commands.txt || true
           
-          echo "[+] ALL 950 BOTS INJECTED SUCCESSFULLY. WAITING FOR 2.5 HOURS..."
-          sleep 9000
-
-          # ------------------ REFRESH SESSION ------------------
+          # ------------------ REFRESH SESSION FOR FLAT STABILITY ------------------
           echo "[!] REFRESHING ALL CONNECTIONS INSTANTLY TO MAINTAIN CONSTANT COUNT..."
-          pkill -f curl
           sleep 1
 
+          # ------------------ SECOND BATCH LAUNCH (FOREGROUND BLOCKING) ------------------
           echo "[!] RE-LAUNCHING THE NEXT BATCH OF 950 BOTS SIMULTANEOUSLY..."
-          cat bot_commands.txt | xargs -I {} -P 950 sh -c "{}" > /dev/null 2>&1 &
-          
-          echo "[+] WAITING FOR THE SECOND 2.5 HOURS..."
-          sleep 9000
+          parallel -j 950 < bot_commands.txt || true
 
-          # ------------------ FINALIZE SESSION ------------------
-          echo "[!] KILLING LOCAL SESSION. NEXT MACHINE WILL TAKE OVER IMMEDIATELY."
-          pkill -f curl
           echo "[+] MACHINE JOB FINISHED."
