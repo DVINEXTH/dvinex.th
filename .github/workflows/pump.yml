@@ -1,4 +1,4 @@
-name: ICECAST 24/7 LISTENER BOT (950 INSTANT FLAT BOTS)
+name: ICECAST 24/7 LISTENER BOT (950 INSTANT REAL THAI IP BOTS XARGS TRIPLE INJECT)
 on:
   schedule:
     - cron: '0 */5 * * *'
@@ -8,44 +8,74 @@ jobs:
   run-bot:
     runs-on: ubuntu-latest
     steps:
-      - name: INSTALL CONCURRENT BENCHMARK TOOLS
+      - name: INSTALL ENVIRONMENT DEPENDENCIES
         run: |
-          echo "[!] INSTALLING APACHE BENCHMARK AND SIEGE TOOLS..."
-          sudo apt-get update && sudo apt-get install -y apache2-utils siege
+          echo "[!] UPDATING SYSTEM AND VERIFYING DEPENDENCIES..."
+          sudo apt-get update && sudo apt-get install -y curl findutils COREUTILS
 
-      - name: RUN AUTOMATED INSTANT MASSIVE LOOP FOR 950 BOTS
+      - name: RUN AUTOMATED INSTANT MASSIVE THAI TRAFFIC GENERATOR
         run: |
           # ===================================================
           # >>> CHANGE THE URL BELOW TO YOUR ICECAST STREAM URL <<<
-          STREAM_URL="https://eagle.streemlion.com/proxy/dvinexc2?mp=/stream"
+          STREAM_URL="http://YOUR_ICECAST_SERVER_IP:PORT/stream"
           # ===================================================
           
-          # FUNCTION TO SPAWN 950 BOTS INSTANTLY USING SIEGE CONCURRENCY
-          SPAWN_BOTS_INSTANT() {
-            echo "[!] LAUNCHING 950 BOTS SIMULTANEOUSLY IN ONE SECOND..."
-            
-            # SIEGE WILL FORCE 950 REAL CONCURRENT CONNECTIONS INSTANTLY AND HOLD FOR 2.5 HOURS
-            # TIME FORMAT IS 2.5 HOURS = 150M (150 MINUTES)
-            siege -c 950 -t 150m -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36" "$STREAM_URL" > /dev/null 2>&1 &
-            
-            echo "[+] 950 BOTS ARE SUCCESSFULLY FLOODED AND CONNECTED."
-          }
+          # POOL OF DIVERSE REAL THAILAND NETWORK NET BLOCKS (AIS, TRUE, 3BB, NT)
+          TH_IP_PREFIXES=(
+            "1.46" "1.47" "27.55" "49.228" "49.230" "58.11" "101.108" "101.109" "110.164" "115.87" "124.120" "124.121" "124.122" "134.236" "171.96" "180.180" "182.52" "184.22" "223.204" "223.205"
+          )
+          NUM_PREFIXES=${#TH_IP_PREFIXES[@]}
 
-          # --- SESSION WORKFLOW ---
-          # 1. LAUNCH FIRST BATCH INSTANTLY
-          SPAWN_BOTS_INSTANT
-          echo "[+] WAITING FOR THE FIRST 2.5 HOURS..."
+          echo "[!] PREPARING 950 ADVANCED ORB BOT COMMANDS IN SYSTEM BUFFER..."
+          rm -f bot_commands.txt
+          
+          for i in {1..950}
+          do
+            # RANDOMIZE THAI IP SUBNETS FOR EVERY SINGLE CONCURRENT CLIENT
+            RAND_INDEX=$(( RANDOM % NUM_PREFIXES ))
+            PREFIX=${TH_IP_PREFIXES[$RAND_INDEX]}
+            OCTET3=$(( RANDOM % 254 + 1 ))
+            OCTET4=$(( RANDOM % 254 + 1 ))
+            FAKE_TH_IP="$PREFIX.$OCTET3.$OCTET4"
+
+            # ROTATE MULTIPLE USER-AGENTS INCLUDING ORB HISBOT 271 SYSTEM
+            MODULO=$((i % 5))
+            if [ $MODULO -eq 0 ]; then
+              UA="ORB HisBot 271 (Thailand Network Traffic Simulator V$i)"
+            elif [ $MODULO -eq 1 ]; then
+              UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.$i.0 Safari/537.36"
+            elif [ $MODULO -eq 2 ]; then
+              UA="Mozilla/5.0 (iPhone; CPU iPhone OS 17_$((i%5))_1 like Mac OS X) AppleWebKit/605.1.15 Mobile/15E148 Safari/605.1"
+            elif [ $MODULO -eq 3 ]; then
+              UA="Mozilla/5.0 (Linux; Android 14; SM-S928B) AppleWebKit/537.36 Chrome/122.0.$i.0 Mobile Safari/537.36"
+            else
+              UA="Mozilla/5.0 (Macintosh; Intel Mac OS X 14_2_1) Version/17.2 Safari/605.1.15"
+            fi
+
+            # TRIPLE-INJECT LOCAL THAI IP LOCATION REGISTER VIA HTTP HEADERS WITHOUT DELAY
+            echo "curl -L -m 20000 -s --tcp-nodelay -H 'X-Forwarded-For: $FAKE_TH_IP' -H 'Client-IP: $FAKE_TH_IP' -H 'X-Real-IP: $FAKE_TH_IP' -A '$UA' '$STREAM_URL'" >> bot_commands.txt
+          done
+
+          # ------------------ FIRST BATCH LAUNCH ------------------
+          echo "[!] LAUNCHING 950 THAI BOTS INSTANTLY VIA ULTRARAPID MULTI-THREADING..."
+          # TRIPLE FORCE PARALLEL EXECUTION AT THE EXACT SAME MILLISECOND
+          cat bot_commands.txt | xargs -I {} -P 950 sh -c "{}" > /dev/null 2>&1 &
+          
+          echo "[+] ALL 950 BOTS INJECTED SUCCESSFULLY. WAITING FOR 2.5 HOURS..."
           sleep 9000
 
-          # 2. REFRESH SESSION WITHIN THE SAME MACHINE INSTANTLY
-          echo "[!] REFRESHING BOTS INSTANTLY TO MAINTAIN FLAT STABILITY..."
-          pkill -f siege
+          # ------------------ REFRESH SESSION ------------------
+          echo "[!] REFRESHING ALL CONNECTIONS INSTANTLY TO MAINTAIN CONSTANT COUNT..."
+          pkill -f curl
           sleep 1
-          SPAWN_BOTS_INSTANT
+
+          echo "[!] RE-LAUNCHING THE NEXT BATCH OF 950 BOTS SIMULTANEOUSLY..."
+          cat bot_commands.txt | xargs -I {} -P 950 sh -c "{}" > /dev/null 2>&1 &
+          
           echo "[+] WAITING FOR THE SECOND 2.5 HOURS..."
           sleep 9000
 
-          # 3. FINAL MINUTE OF THE MACHINE SESSION BEFORE NEXT MACHINE TAKES OVER
+          # ------------------ FINALIZE SESSION ------------------
           echo "[!] KILLING LOCAL SESSION. NEXT MACHINE WILL TAKE OVER IMMEDIATELY."
-          pkill -f siege
+          pkill -f curl
           echo "[+] MACHINE JOB FINISHED."
