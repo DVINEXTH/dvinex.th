@@ -11,7 +11,7 @@ jobs:
       - name: INSTALL ENVIRONMENT DEPENDENCIES
         run: |
           echo "[!] UPDATING SYSTEM AND VERIFYING DEPENDENCIES..."
-          sudo apt-get update && sudo apt-get install -y curl findutils COREUTILS
+          sudo apt-get update && sudo apt-get install -y curl findutils coreutils
 
       - name: RUN AUTOMATED INSTANT MASSIVE THAI TRAFFIC GENERATOR
         run: |
@@ -53,7 +53,7 @@ jobs:
             fi
 
             # TRIPLE-INJECT LOCAL THAI IP LOCATION REGISTER VIA HTTP HEADERS WITHOUT DELAY
-            echo "curl -L -m 20000 -s --tcp-nodelay -H 'X-Forwarded-For: $FAKE_TH_IP' -H 'Client-IP: $FAKE_TH_IP' -H 'X-Real-IP: $FAKE_TH_IP' -A '$UA' '$STREAM_URL'" >> bot_commands.txt
+            echo "curl -L -m 20000 -s --tcp-nodelay -H 'X-Forwarded-For: $FAKE_TH_IP' -H 'Client-IP: $FAKE_TH_IP' -H 'X-Real-IP: $FAKE_TH_IP' -A '$UA' $STREAM_URL" >> bot_commands.txt
           done
 
           # ------------------ FIRST BATCH LAUNCH ------------------
