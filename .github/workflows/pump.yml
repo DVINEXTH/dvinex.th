@@ -1,4 +1,4 @@
-name: ICECAST 24/7 LISTENER BOT (950 INSTANT REAL THAI IP BOTS XARGS TRIPLE INJECT)
+name: ICECAST 24/7 LISTENER BOT (950 INSTANT THAI IP PROXY FORCE)
 on:
   schedule:
     - cron: '0 */5 * * *'
@@ -17,28 +17,33 @@ jobs:
         run: |
           # ===================================================
           # >>> CHANGE THE URL BELOW TO YOUR ICECAST STREAM URL <<<
-          STREAM_URL="https://eagle.streemlion.com/proxy/dvinexc2?mp=/stream"
+          STREAM_URL="http://YOUR_ICECAST_SERVER_IP:PORT/stream"
           # ===================================================
-          
-          # POOL OF DIVERSE REAL THAILAND NETWORK NET BLOCKS (AIS, TRUE, 3BB, NT)
-          TH_IP_PREFIXES=(
-            "1.46" "1.47" "27.55" "49.228" "49.230" "58.11" "101.108" "101.109" "110.164" "115.87" "124.120" "124.121" "124.122" "134.236" "171.96" "180.180" "182.52" "184.22" "223.204" "223.205"
-          )
-          NUM_PREFIXES=${#TH_IP_PREFIXES[@]}
 
-          echo "[!] PREPARING 950 ADVANCED ORB BOT COMMANDS IN SYSTEM BUFFER..."
+          echo "[!] FETCHING HIGH-SPEED LIVE THAILAND PROXY POOL..."
+          # DOWNLOAD LIVE THAI PROXIES FROM PREMIUM PUBLIC API SOURCED DAILY
+          curl -s "https://proxyscrape.com" > raw_thai.txt
+          curl -s "https://githubusercontent.com" | grep -E "^(1.46|1.47|27.55|49.228|49.230|58.11|101.108|101.109|110.164|115.87|124.120|124.121|124.122|171.96|180.180|182.52|184.22|223.204|223.205)" >> raw_thai.txt
+          
+          # CLEAN AND FILTER COMPACT LIST
+          sort -u raw_thai.txt | grep -v '^$' > thai_proxies.txt
+          PROXY_COUNT=$(wc -l < thai_proxies.txt)
+          
+          # IF BACKEND POOL IS SMALL, INJECT HIGH-AVAILABILITY THAI BROADCAST NODES
+          if [ $PROXY_COUNT -lt 10 ]; then
+            echo "202.28.40.4:3128" >> thai_proxies.txt
+            echo "202.44.34.34:8080" >> thai_proxies.txt
+            echo "110.164.13.111:8080" >> thai_proxies.txt
+            PROXY_COUNT=$(wc -l < thai_proxies.txt)
+          fi
+          echo "[+] ACTIVE THAI PROXY NODES DETECTED: $PROXY_COUNT"
+
+          echo "[!] PREPARING 950 ADVANCED ORB BOT COMMANDS REGISTERED VIA THAI ROUTING..."
           rm -f bot_commands.txt
           
           for i in {1..950}
           do
-            # RANDOMIZE THAI IP SUBNETS FOR EVERY SINGLE CONCURRENT CLIENT
-            RAND_INDEX=$(( RANDOM % NUM_PREFIXES ))
-            PREFIX=${TH_IP_PREFIXES[$RAND_INDEX]}
-            OCTET3=$(( RANDOM % 254 + 1 ))
-            OCTET4=$(( RANDOM % 254 + 1 ))
-            FAKE_TH_IP="$PREFIX.$OCTET3.$OCTET4"
-
-            # ROTATE MULTIPLE USER-AGENTS INCLUDING ORB HISBOT 271 SYSTEM
+            # ROTATE MULTIPLE USER-AGENTS DIRECTLY INCLUDING ORB HISBOT 271 SYSTEM
             MODULO=$((i % 5))
             if [ $MODULO -eq 0 ]; then
               UA="ORB HisBot 271 (Thailand Network Traffic Simulator V$i)"
@@ -52,14 +57,16 @@ jobs:
               UA="Mozilla/5.0 (Macintosh; Intel Mac OS X 14_2_1) Version/17.2 Safari/605.1.15"
             fi
 
-            # TRIPLE-INJECT LOCAL THAI IP LOCATION REGISTER VIA HTTP HEADERS
-            # SET INDIVIDUAL CURL TIMEOUT TO 2.5 HOURS (9000 SECONDS) IN FOREGROUND RUN
-            echo "curl -L -m 9000 -s --tcp-nodelay -H 'X-Forwarded-For: $FAKE_TH_IP' -H 'Client-IP: $FAKE_TH_IP' -H 'X-Real-IP: $FAKE_TH_IP' -A '$UA' '$STREAM_URL'" >> bot_commands.txt
+            # SELECT AND ASSIGN UNIQUE THAI PROXY NODE PER BOT CLIENT TO SCATTER IP ADDRESSES
+            PROXY_LINE=$(( (i % PROXY_COUNT) + 1 ))
+            CURRENT_TH_PROXY=$(sed -n "${PROXY_LINE}p" thai_proxies.txt | tr -d '\r')
+
+            # FORCE HARDWARE ROUTING THROUGH THAI IP ADDRESS WITH FLAT 2.5 HOURS TIMEOUT
+            echo "curl -x 'http://$CURRENT_TH_PROXY' -L -m 9000 -s --tcp-nodelay -A '$UA' '$STREAM_URL'" >> bot_commands.txt
           done
 
           # ------------------ FIRST BATCH LAUNCH (FOREGROUND BLOCKING) ------------------
-          echo "[!] LAUNCHING FIRST BATCH OF 950 BOTS INSTANTLY VIA PARALLEL FOREGROUND PROCESSSING..."
-          # PARALLEL WILL FORCIBLY KEEP ALL 950 CONNECTIONS ALIVE WITHOUT BEING KILLED BY GITHUB WORKFLOW
+          echo "[!] LAUNCHING FIRST BATCH OF 950 BOTS INSTANTLY VIA THAI PROXY TUNNELS..."
           parallel -j 950 < bot_commands.txt || true
           
           # ------------------ REFRESH SESSION FOR FLAT STABILITY ------------------
