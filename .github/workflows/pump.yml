@@ -1,4 +1,4 @@
-name: ICECAST 24/7 LISTENER BOT (950 INSTANT REAL THAI IP BOTS VIA XARGS)
+name: ICECAST 24/7 LISTENER BOT (950 INSTANT FLAT BOTS)
 on:
   schedule:
     - cron: '0 */5 * * *'
@@ -8,70 +8,44 @@ jobs:
   run-bot:
     runs-on: ubuntu-latest
     steps:
-      - name: RUN AUTOMATED INSTANT MASSIVE THAI PROXY LOOP
+      - name: INSTALL CONCURRENT BENCHMARK TOOLS
+        run: |
+          echo "[!] INSTALLING APACHE BENCHMARK AND SIEGE TOOLS..."
+          sudo apt-get update && sudo apt-get install -y apache2-utils siege
+
+      - name: RUN AUTOMATED INSTANT MASSIVE LOOP FOR 950 BOTS
         run: |
           # ===================================================
           # >>> CHANGE THE URL BELOW TO YOUR ICECAST STREAM URL <<<
           STREAM_URL="https://eagle.streemlion.com/proxy/dvinexc2?mp=/stream"
           # ===================================================
+          
+          # FUNCTION TO SPAWN 950 BOTS INSTANTLY USING SIEGE CONCURRENCY
+          SPAWN_BOTS_INSTANT() {
+            echo "[!] LAUNCHING 950 BOTS SIMULTANEOUSLY IN ONE SECOND..."
+            
+            # SIEGE WILL FORCE 950 REAL CONCURRENT CONNECTIONS INSTANTLY AND HOLD FOR 2.5 HOURS
+            # TIME FORMAT IS 2.5 HOURS = 150M (150 MINUTES)
+            siege -c 950 -t 150m -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36" "$STREAM_URL" > /dev/null 2>&1 &
+            
+            echo "[+] 950 BOTS ARE SUCCESSFULLY FLOODED AND CONNECTED."
+          }
 
-          echo "[!] FETCHING LIVE THAILAND PUBLIC PROXY POOL..."
-          
-          # AUTOMATICALLY EXTRACT FRESH PUBLIC THAILAND PROXY SERVERS
-          curl -s "https://proxyscrape.com" > thai_proxies.txt
-          
-          # FALLBACK HIGH-AVAILABILITY THAI PROXIES IF API IS BUSY
-          echo "202.28.40.4:3128" >> thai_proxies.txt
-          echo "202.44.34.34:8080" >> thai_proxies.txt
-          echo "110.164.13.111:8080" >> thai_proxies.txt
-          
-          PROXY_COUNT=$(wc -l < thai_proxies.txt)
-          echo "[+] FOUND $PROXY_COUNT AVAILABLE THAI PROXIES."
-          
-          # PRE-GENERATE AND PREPARE ALL 950 COMMANDS IN A TEMP FILE FOR BULK LAUNCH
-          echo "[!] PREPARING 950 BOT CONFIGURATIONS IN MEMORY..."
-          rm -f bot_commands.txt
-          
-          for i in {1..950}
-          do
-            MODULO=$((i % 4))
-            if [ $MODULO -eq 0 ]; then
-              UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.$i.0 Safari/537.36"
-            elif [ $MODULO -eq 1 ]; then
-              UA="Mozilla/5.0 (iPhone; CPU iPhone OS 17_$((i%5))_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/605.1"
-            elif [ $MODULO -eq 2 ]; then
-              UA="Mozilla/5.0 (Linux; Android 14; SM-S928B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.$i.0 Mobile Safari/537.36"
-            else
-              UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0"
-            fi
-
-            PROXY_LINE=$(( (i % PROXY_COUNT) + 1 ))
-            CURRENT_TH_PROXY=$(sed -n "${PROXY_LINE}p" thai_proxies.txt | tr -d '\r')
-
-            # WRITE EVERY SINGLE CURL COMMAND LINE INTO THE BUFFER FILE
-            echo "curl -x http://$CURRENT_TH_PROXY -L -m 216000 -s -A \"$UA\" $STREAM_URL" >> bot_commands.txt
-          done
-
-          # ------------------ FIRST BATCH LAUNCH ------------------
-          echo "[!] TRIGGERING 950 BOTS SIMULTANEOUSLY USING HIGH-SPEED PARALLEL MULTI-THREADING..."
-          # XARGS WITH -P 950 WILL FORCE UBUNTU TO SPAWN ALL 950 CONNECTIONS AT THE EXACT SAME SECOND
-          cat bot_commands.txt | xargs -I {} -P 950 sh -c "{}" > /dev/null 2>&1 &
-          
-          echo "[+] ALL 950 THAI BOTS ARE ACTIVE AND HOVERING! WAITING FOR THE FIRST 2.5 HOURS..."
+          # --- SESSION WORKFLOW ---
+          # 1. LAUNCH FIRST BATCH INSTANTLY
+          SPAWN_BOTS_INSTANT
+          echo "[+] WAITING FOR THE FIRST 2.5 HOURS..."
           sleep 9000
 
-          # ------------------ REFRESH SESSION ------------------
-          echo "[!] REFRESHING ALL CONNECTIONS INSTANTLY TO MAINTAIN FLAT STABILITY..."
-          pkill -f curl
+          # 2. REFRESH SESSION WITHIN THE SAME MACHINE INSTANTLY
+          echo "[!] REFRESHING BOTS INSTANTLY TO MAINTAIN FLAT STABILITY..."
+          pkill -f siege
           sleep 1
-
-          echo "[!] TRIGGERING THE NEXT BATCH OF 950 BOTS SIMULTANEOUSLY..."
-          cat bot_commands.txt | xargs -I {} -P 950 sh -c "{}" > /dev/null 2>&1 &
-          
+          SPAWN_BOTS_INSTANT
           echo "[+] WAITING FOR THE SECOND 2.5 HOURS..."
           sleep 9000
 
-          # ------------------ FINALIZE SESSION ------------------
+          # 3. FINAL MINUTE OF THE MACHINE SESSION BEFORE NEXT MACHINE TAKES OVER
           echo "[!] KILLING LOCAL SESSION. NEXT MACHINE WILL TAKE OVER IMMEDIATELY."
-          pkill -f curl
+          pkill -f siege
           echo "[+] MACHINE JOB FINISHED."
