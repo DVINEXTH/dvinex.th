@@ -16,7 +16,7 @@ jobs:
       - name: RUN AUTOMATED INSTANT MASSIVE THAI TRAFFIC GENERATOR
         run: |
           # ===================================================
-          # >>> CHANGE THE URL BELOW TO YOUR ICECAST STREAM URL <<<
+          # >>> DIRECT TARGET ICECAST STREAM COMPLIANCE SOURCE <<<
           STREAM_URL="https://eagle.streemlion.com/proxy/dvinexc2?mp=/stream"
           # ===================================================
           
@@ -26,30 +26,37 @@ jobs:
           )
           NUM_PREFIXES=${#TH_IP_PREFIXES[@]}
 
-          echo "[!] PREPARING 950 ADVANCED ORB BOT COMMANDS IN SYSTEM BUFFER..."
+          echo "[!] PREPARING 950 RANDOMIZED PLATFORM COMMANDS IN SYSTEM BUFFER..."
           rm -f bot_commands.txt
           
           for i in {1..950}
           do
-            # GENERATE TOTALLY RANDOMIZED THAI IP ADDRESS
+            # GENERATE TOTALLY RANDOMIZED NON-SEQUENTIAL THAI IP ADDRESS
             RAND_INDEX=$(( RANDOM % NUM_PREFIXES ))
             PREFIX=${TH_IP_PREFIXES[$RAND_INDEX]}
             OCTET3=$(( RANDOM % 254 + 1 ))
             OCTET4=$(( RANDOM % 254 + 1 ))
             FAKE_TH_IP="$PREFIX.$OCTET3.$OCTET4"
 
-            # DISTRIBUTE DIVERSE USER-AGENTS EVENLY TO PREVENT SYSTEM CLUSTERING
-            MODULO=$((i % 5))
-            if [ $MODULO -eq 0 ]; then
-              UA="ORB HisBot 271 (Thailand Network Traffic Simulator V$i)"
-            elif [ $MODULO -eq 1 ]; then
+            # FULL STOCHASTIC RANDOMIZATION ACROSS DESKTOP AND MOBILE USER-AGENTS TO PREVENT CLUSTERING
+            RAND_UA_CHOICE=$(( RANDOM % 8 ))
+            
+            if [ $RAND_UA_CHOICE -eq 0 ]; then
               UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.$i.0 Safari/537.36"
-            elif [ $MODULO -eq 2 ]; then
-              UA="Mozilla/5.0 (iPhone; CPU iPhone OS 17_$((i%5))_1 like Mac OS X) AppleWebKit/605.1.15 Mobile/15E148 Safari/605.1"
-            elif [ $MODULO -eq 3 ]; then
+            elif [ $RAND_UA_CHOICE -eq 1 ]; then
+              UA="Mozilla/5.0 (iPhone; CPU iPhone OS 17_$((RANDOM%5))_1 like Mac OS X) AppleWebKit/605.1.15 Mobile/15E148 Safari/605.1"
+            elif [ $RAND_UA_CHOICE -eq 2 ]; then
               UA="Mozilla/5.0 (Linux; Android 14; SM-S928B) AppleWebKit/537.36 Chrome/122.0.$i.0 Mobile Safari/537.36"
+            elif [ $RAND_UA_CHOICE -eq 3 ]; then
+              UA="Mozilla/5.0 (Macintosh; Intel Mac OS X 14_2_1) AppleWebKit/605.1.15 Version/17.2 Safari/605.1.15"
+            elif [ $RAND_UA_CHOICE -eq 4 ]; then
+              UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0.0.0 Safari/537.36 Edg/120.0.$i.0"
+            elif [ $RAND_UA_CHOICE -eq 5 ]; then
+              UA="Mozilla/5.0 (Linux; Android 13; CPH2437) AppleWebKit/537.36 Chrome/119.0.$i.0 Mobile Safari/537.36"
+            elif [ $RAND_UA_CHOICE -eq 6 ]; then
+              UA="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) Chrome/120.0.$i.0 Safari/537.36"
             else
-              UA="Mozilla/5.0 (Macintosh; Intel Mac OS X 14_2_1) Version/17.2 Safari/605.1.15"
+              UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0"
             fi
 
             # TRIPLE FORCE INJECT THAI IP PARAMETERS DIRECTLY INSIDE HIGH-SPEED NETWORKING HEADERS
